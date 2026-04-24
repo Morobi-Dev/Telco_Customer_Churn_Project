@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 import os
 
+import streamlit as st
+
 # Correct absolute path with your username
 file_path = os.path.join(os.path.dirname(__file__), "Telco_customer_churn.xlsx")
 df = pd.read_excel(file_path)
@@ -340,6 +342,20 @@ plt.xlabel('Importance')
 plt.title('Top Features Influencing Churn (Gradient Boosting)')
 plt.gca().invert_yaxis()
 plt.show()
+
+
+st.title("Telco Customer Churn Analysis")
+
+st.write("📊 Business Insights")
+st.write("Churn rate:", "26.54%")
+st.write("Estimated monthly revenue lost due to churn: R139,130.85")
+st.write("Estimated annual revenue lost due to churn: R1,669,570.20")
+
+st.write("### Model Performance")
+st.metric("Logistic Regression Accuracy", "80.45%")
+st.metric("Random Forest Accuracy", "78.39%")
+st.metric("Gradient Boosting Accuracy", "78.96%")
+
 
 
 
