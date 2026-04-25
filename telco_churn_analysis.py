@@ -311,6 +311,11 @@ gb = GradientBoostingClassifier(n_estimators=100, random_state=42)
 gb.fit(X_train, y_train)
 gb_pred = gb.predict(X_test)
 
+# After training Gradient Boosting model
+gb_model = GradientBoostingClassifier()
+gb_model.fit(X_train, y_train)
+gb_acc = gb_model.score(X_test, y_test)
+
 # Compare accuracy
 print("Logistic Regression Accuracy:", accuracy_score(y_test, log_pred))
 print("Random Forest Accuracy:", accuracy_score(y_test, rf_pred))
