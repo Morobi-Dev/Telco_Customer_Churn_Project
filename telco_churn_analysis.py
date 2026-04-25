@@ -369,13 +369,19 @@ with tab1:
 with tab2:
     st.write("### Business Insights")
     st.write("Churn rate:", f"{churn_rate:.2%}")
-    st.write("Estimated monthly revenue lost: R{monthly_loss:,.2f}")
-    st.write("Estimated annual revenue lost: R{annual_loss:,.2f}")
+    st.write(f"Estimated monthly revenue lost: R{monthly_loss:,.2f}")
+    st.write(f"Estimated annual revenue lost: R{annual_loss:,.2f}")
 
-    contract_type = st.selectbox("Filter by contract type:", df['contract'].unique())
-    filtered = df[df['contract'] == contract_type]
-    st.write(f"Churn rate for {contract_type} contracts:", 
-             f"{filtered['churn_value'].mean():.2%}")
+    # --- Safe check for contract column ---
+    if 'Contract' in df.columns:
+        contract_type = st.selectbox("Filter by contract type:", df['Contract'].unique())
+        filtered = df[df['Contract'] == contract_type]
+        st.write(f"Churn rate for {contract_type} contracts:", 
+                 f"{filtered['churn_value'].mean():.2%}")
+    else:
+        st.info("Contract column not found in dataset. Available columns are:")
+        st.write(df.columns.tolist())
+
 
 with tab3:
     st.write("### Model Results")
