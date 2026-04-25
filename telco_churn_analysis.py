@@ -356,6 +356,37 @@ st.metric("Logistic Regression Accuracy", "80.45%")
 st.metric("Random Forest Accuracy", "78.39%")
 st.metric("Gradient Boosting Accuracy", "78.96%")
 
+# --- Streamlit interactive layout ---
+tab1, tab2, tab3 = st.tabs(["Dataset Overview", "Business Insights", "Model Results"])
+
+with tab1:
+    st.write("### Dataset Overview")
+    st.dataframe(df.head())
+    st.bar_chart(df['churn_value'].value_counts())
+
+with tab2:
+    st.write("### Business Insights")
+    st.write("Churn rate:", f"{churn_rate:.2%}")
+    st.write("Estimated monthly revenue lost: R{monthly_loss:,.2f}")
+    st.write("Estimated annual revenue lost: R{annual_loss:,.2f}")
+
+    contract_type = st.selectbox("Filter by contract type:", df['contract'].unique())
+    filtered = df[df['contract'] == contract_type]
+    st.write(f"Churn rate for {contract_type} contracts:", 
+             f"{filtered['churn_value'].mean():.2%}")
+
+with tab3:
+    st.write("### Model Results")
+    model_choice = st.radio("Select model:", ["Logistic Regression", "Random Forest", "Gradient Boosting"])
+    
+    if model_choice == "Logistic Regression":
+        st.metric("Accuracy", f"{log_reg_acc*100:.2f}%")
+    elif model_choice == "Random Forest":
+        st.metric("Accuracy", f"{rf_acc*100:.2f}%")
+    else:
+        st.metric("Accuracy", f"{gb_acc*100:.2f}%")
+
+
 
 
 
