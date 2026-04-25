@@ -361,8 +361,10 @@ tab1, tab2, tab3 = st.tabs(["Dataset Overview", "Business Insights", "Model Resu
 
 with tab1:
     st.write("### Dataset Overview")
-    st.dataframe(df.head())
-    st.bar_chart(df['churn_value'].value_counts())
+    # Ensure unique column names before showing in Streamlit
+    df_clean = df.loc[:, ~df.columns.duplicated()]
+    st.dataframe(df_clean.head())
+    st.bar_chart(df_clean['churn_value'].value_counts())
 
 with tab2:
     st.write("### Business Insights")
