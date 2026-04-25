@@ -281,6 +281,11 @@ feature_importance = log_reg.coef_[0]
 feature_names = X.columns
 indices = np.argsort(np.abs(feature_importance))[::-1]
 
+# Logistic Regression
+log_reg = LogisticRegression(class_weight='balanced')
+log_reg.fit(X_train, y_train)
+log_reg_acc = log_reg.score(X_test, y_test)
+
 plt.figure(figsize=(10, 6))
 plt.barh([feature_names[i] for i in indices[:min(15, len(feature_names))]],
          feature_importance[indices[:min(15, len(feature_names))]])
@@ -296,6 +301,11 @@ rf_pred = rf.predict(X_test)
 
 rf_importance = rf.feature_importances_
 indices = np.argsort(rf_importance)[::-1]
+
+# Random Forest
+rf_model = RandomForestClassifier(class_weight='balanced')
+rf_model.fit(X_train, y_train)
+rf_acc = rf_model.score(X_test, y_test)    
 
 plt.figure(figsize=(10, 6))
 plt.barh([feature_names[i] for i in indices[:min(15, len(feature_names))]],
