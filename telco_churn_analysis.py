@@ -384,24 +384,29 @@ with tab1:
 with tab2:
     st.header("Business Insights")
 
-    # Churn rate
-    churn_rate = df["churn_value"].mean() * 100
-    st.write(f"**Churn rate:** {churn_rate:.2f}%")
+    # Ensure churn_value is numeric and handle duplicates
+    if "churn_value" in df.columns:
+        # Drop duplicate columns if they exist
+        df = df.loc[:, ~df.columns.duplicated()]
+
+        # Convert churn_value to numeric safely
+        df["churn_value"] = pd.to_numeric(df["churn_value"], errors="coerce")
+
+        churn_rate = df["churn_value"].mean() * 100
+
+        if pd.notna(churn_rate):
+            st.write(f"**Churn rate:** {churn_rate:.2f}%")
+        else:
+            st.warning("Churn rate could not be calculated (no valid numeric values).")
+    else:
+        st.warning("churn_value column not found in dataset.")
 
     # Revenue loss estimates
-    monthly_loss = df.loc[df["churn_value"] == 1, "monthly charges"].sum()
-    annual_loss = monthly_loss * 12
-    st.write(f"**Estimated monthly revenue lost:** R{monthly_loss:,.2f}")
-    st.write(f"**Estimated annual revenue lost:** R{annual_loss:,.2f}")
-
-    # Contract column check
-    if "Contract" not in df.columns:
-        st.info(
-            "Contract column not found in dataset. Available columns are:\n\n"
-            f"{list(df.columns)}"
-        )
-    else:
-        st.write("Contract column is available for analysis.")
+    if "monthly charges" in df.columns and "churn_value" in df.columns:
+        monthly_loss = df.loc[df["churn_value"] == 1, "monthly charges"].sum()
+        annual_loss = monthly_loss * 12
+        st.write(f"**Estimated monthly revenue lost:** R{monthly_loss:,.2f}")
+        st.write(f"**Estimated annual revenue lost:** R{annual_loss:,.2f}")
 
 
 with tab3:
