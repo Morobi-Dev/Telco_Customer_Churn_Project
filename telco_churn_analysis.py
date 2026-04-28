@@ -383,19 +383,40 @@ with tab1:
 
 with tab2:
     st.write("### Business Insights")
-    st.write("Churn rate:", f"{churn_rate:.2%}")
+
+    # Let user choose which filter to apply
+    filter_choice = st.radio(
+        "Choose a filter:",
+        ["Tenure Months", "Total Services"]
+    )
+
+    if filter_choice == "Tenure Months" and 'tenure months' in df.columns:
+        tenure_group = st.selectbox(
+            "Select tenure months:",
+            sorted(df['tenure months'].unique())
+        )
+        filtered = df[df['tenure months'] == tenure_group]
+        segment_churn_rate = filtered['churn_value'].mean() * 100
+        st.metric(f"Churn Rate for {tenure_group} months", f"{segment_churn_rate:.2f}%")
+
+    elif filter_choice == "Total Services" and 'total_services' in df.columns:
+        service_group = st.selectbox(
+            "Select total services:",
+            sorted(df['total_services'].unique())
+        )
+        filtered = df[df['total_services'] == service_group]
+        segment_churn_rate = filtered['churn_value'].mean() * 100
+        st.metric(f"Churn Rate for {service_group} services", f"{segment_churn_rate:.2f}%")
+
+    else:
+        st.info("Selected column not found in dataset. Available columns are:")
+        st.write(df.columns.tolist())
+
+    # Always show overall metrics too
+    st.write("Overall churn rate:", f"{churn_rate:.2%}")
     st.write(f"Estimated monthly revenue lost: R{monthly_loss:,.2f}")
     st.write(f"Estimated annual revenue lost: R{annual_loss:,.2f}")
 
-    # --- Safe check for contract column ---
-    if 'Contract' in df.columns:
-        contract_type = st.selectbox("Filter by contract type:", df['Contract'].unique())
-        filtered = df[df['Contract'] == contract_type]
-        st.write(f"Churn rate for {contract_type} contracts:", 
-                 f"{filtered['churn_value'].mean():.2%}")
-    else:
-        st.info("Contract column not found in dataset. Available columns are:")
-        st.write(df.columns.tolist())
 
 
 with tab3:
