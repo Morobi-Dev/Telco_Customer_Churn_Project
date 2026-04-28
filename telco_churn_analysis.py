@@ -382,47 +382,26 @@ with tab1:
     st.bar_chart(df_clean['churn_value'].value_counts())
 
 with tab2:
-    st.write("### Business Insights")
+    st.header("Business Insights")
 
-    filter_choice = st.radio(
-        "Choose a filter:",
-        ["Tenure Months", "Total Services"]
-    )
+    # Churn rate
+    churn_rate = df["churn_value"].mean() * 100
+    st.write(f"**Churn rate:** {churn_rate:.2f}%")
 
-    if filter_choice == "Tenure Months" and 'tenure months' in df.columns:
-        tenure_group = st.selectbox(
-            "Select tenure months:",
-            sorted(df['tenure months'].unique())
+    # Revenue loss estimates
+    monthly_loss = df.loc[df["churn_value"] == 1, "monthly charges"].sum()
+    annual_loss = monthly_loss * 12
+    st.write(f"**Estimated monthly revenue lost:** R{monthly_loss:,.2f}")
+    st.write(f"**Estimated annual revenue lost:** R{annual_loss:,.2f}")
+
+    # Contract column check
+    if "Contract" not in df.columns:
+        st.info(
+            "Contract column not found in dataset. Available columns are:\n\n"
+            f"{list(df.columns)}"
         )
-        filtered = df[df['tenure months'] == tenure_group]
-
-        if not filtered.empty:
-            segment_churn_rate = filtered['churn_value'].mean() * 100
-            st.metric(f"Churn Rate for {tenure_group} months", f"{segment_churn_rate:.2f}%")
-        else:
-            st.warning("No data available for this tenure group.")
-
-    elif filter_choice == "Total Services" and 'total_services' in df.columns:
-        service_group = st.selectbox(
-            "Select total services:",
-            sorted(df['total_services'].unique())
-        )
-        filtered = df[df['total_services'] == service_group]
-
-        if not filtered.empty:
-            segment_churn_rate = filtered['churn_value'].mean() * 100
-            st.metric(f"Churn Rate for {service_group} services", f"{segment_churn_rate:.2f}%")
-        else:
-            st.warning("No data available for this service group.")
-
     else:
-        st.info("Selected column not found in dataset. Available columns are:")
-        st.write(df.columns.tolist())
-
-    # Always show overall metrics too
-    st.write("Overall churn rate:", f"{churn_rate:.2%}")
-    st.write(f"Estimated monthly revenue lost: R{monthly_loss:,.2f}")
-    st.write(f"Estimated annual revenue lost: R{annual_loss:,.2
+        st.write("Contract column is available for analysis.")
 
 
 with tab3:
