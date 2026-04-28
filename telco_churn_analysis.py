@@ -384,7 +384,6 @@ with tab1:
 with tab2:
     st.write("### Business Insights")
 
-    # Let user choose which filter to apply
     filter_choice = st.radio(
         "Choose a filter:",
         ["Tenure Months", "Total Services"]
@@ -396,8 +395,12 @@ with tab2:
             sorted(df['tenure months'].unique())
         )
         filtered = df[df['tenure months'] == tenure_group]
-        segment_churn_rate = filtered['churn_value'].mean() * 100
-        st.metric(f"Churn Rate for {tenure_group} months", f"{segment_churn_rate:.2f}%")
+
+        if not filtered.empty:
+            segment_churn_rate = filtered['churn_value'].mean() * 100
+            st.metric(f"Churn Rate for {tenure_group} months", f"{segment_churn_rate:.2f}%")
+        else:
+            st.warning("No data available for this tenure group.")
 
     elif filter_choice == "Total Services" and 'total_services' in df.columns:
         service_group = st.selectbox(
@@ -405,8 +408,12 @@ with tab2:
             sorted(df['total_services'].unique())
         )
         filtered = df[df['total_services'] == service_group]
-        segment_churn_rate = filtered['churn_value'].mean() * 100
-        st.metric(f"Churn Rate for {service_group} services", f"{segment_churn_rate:.2f}%")
+
+        if not filtered.empty:
+            segment_churn_rate = filtered['churn_value'].mean() * 100
+            st.metric(f"Churn Rate for {service_group} services", f"{segment_churn_rate:.2f}%")
+        else:
+            st.warning("No data available for this service group.")
 
     else:
         st.info("Selected column not found in dataset. Available columns are:")
@@ -415,8 +422,7 @@ with tab2:
     # Always show overall metrics too
     st.write("Overall churn rate:", f"{churn_rate:.2%}")
     st.write(f"Estimated monthly revenue lost: R{monthly_loss:,.2f}")
-    st.write(f"Estimated annual revenue lost: R{annual_loss:,.2f}")
-
+    st.write(f"Estimated annual revenue lost: R{annual_loss:,.2
 
 
 with tab3:
