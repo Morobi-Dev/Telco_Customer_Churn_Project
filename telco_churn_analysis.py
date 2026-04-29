@@ -387,9 +387,12 @@ with tab1:
 with tab2:
     st.header("Business Insights")
 
+    # 🔹 Clean duplicates here before using the slider
+    df_clean = df.loc[:, ~df.columns.duplicated()]
+
     # Local slider for exploration
-    min_tenure = st.slider("Minimum tenure months", 0, int(df["tenure months"].max()), 0)
-    filtered_df = df[df["tenure months"] >= min_tenure]
+    min_tenure = st.slider("Minimum tenure months", 0, int(df_clean["tenure months"].max()), 0)
+    filtered_df = df_clean[df_clean["tenure months"] >= min_tenure]
 
     # Churn metrics
     churn_rate = filtered_df["churn_value"].mean() * 100
@@ -408,6 +411,7 @@ with tab2:
     # Download button
     csv = filtered_df.to_csv(index=False).encode("utf-8")
     st.download_button("Download Insights (CSV)", csv, "business_insights.csv", "text/csv")
+
 
 with tab3:
     st.write("### Model Results")
