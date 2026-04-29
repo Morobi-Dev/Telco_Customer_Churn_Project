@@ -2,6 +2,7 @@
 import pandas as pd
 import numpy as np
 import os
+import io
 
 import streamlit as st
 
@@ -408,10 +409,27 @@ with tab2:
     new_loss = annual_loss * (1 - drop_rate/100)
     st.write(f"New Annual Loss if churn drops: R{new_loss:,.2f}")
 
-   # Download button (CSV)
-    csv = filtered_df.to_csv(index=False).encode("utf-8")
-    st.download_button("Download Insights (CSV)", csv, "business_insights.csv", "text/csv")
+  # --- CSV download ---
+csv = filtered_df.to_csv(index=False).encode("utf-8")
+st.download_button(
+    label="Download Insights (CSV)",
+    data=csv,
+    file_name="business_insights.csv",
+    mime="text/csv"
+)
 
+# --- Excel download ---
+output = io.BytesIO()
+with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
+    filtered_df.to_excel(writer, index=False, sheet_name="Insights")
+excel_data = output.getvalue()
+
+st.download_button(
+    label="Download Insights (Excel)",
+    data=excel_data,
+    file_name="business_insights.xlsx",
+    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+)
 
 
 with tab3:
