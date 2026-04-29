@@ -374,6 +374,11 @@ st.metric("Gradient Boosting Accuracy", "78.96%")
 # --- Streamlit interactive layout ---
 tab1, tab2, tab3 = st.tabs(["Dataset Overview", "Business Insights", "Model Results"])
 
+# Download report
+csv = filtered_df.to_csv(index=False).encode('utf-8')
+st.download_button("Download filtered data as CSV", csv, "filtered_data.csv", "text/csv")
+
+
 with tab1:
     st.write("### Dataset Overview")
     # Ensure unique column names before showing in Streamlit
