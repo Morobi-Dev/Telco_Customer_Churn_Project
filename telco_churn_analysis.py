@@ -431,7 +431,6 @@ st.download_button(
     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 )
 
-
 with tab3:
     st.write("### Model Results")
     model_choice = st.radio("Select model:", ["Logistic Regression", "Random Forest", "Gradient Boosting"])
