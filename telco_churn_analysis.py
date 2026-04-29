@@ -391,7 +391,7 @@ with tab2:
 
     # Churn metrics
     churn_rate = filtered_df["churn_value"].mean() * 100
-    monthly_loss = filtered_df.loc[filtered_df["churn_value"] == 1, "monthly charges"].sum()
+    monthly_loss = filtered_df[filtered_df["churn_value"] == 1]["monthly charges"].sum()
     annual_loss = monthly_loss * 12
 
     st.write(f"Churn Rate: {churn_rate:.2f}%")
@@ -406,8 +406,6 @@ with tab2:
     # Download button
     csv = filtered_df.to_csv(index=False).encode("utf-8")
     st.download_button("Download Insights (CSV)", csv, "business_insights.csv", "text/csv")
-
-
 
 with tab3:
     st.write("### Model Results")
