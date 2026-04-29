@@ -9,6 +9,8 @@ import streamlit as st
 file_path = os.path.join(os.path.dirname(__file__), "Telco_customer_churn.xlsx")
 df = pd.read_excel(file_path)
 
+df = df.loc[:, ~df.columns.duplicated()]
+
 # Load dataset once and normalize column names
 df = pd.read_excel(file_path)
 df.columns = df.columns.str.strip().str.lower()
