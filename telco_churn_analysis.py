@@ -385,29 +385,28 @@ with tab1:
 with tab2:
     st.header("Business Insights")
 
-    # Ensure churn_value is numeric and handle duplicates
-    if "churn_value" in df.columns:
-        # Drop duplicate columns if they exist
-        df = df.loc[:, ~df.columns.duplicated()]
+    # Local slider for exploration
+    min_tenure = st.slider("Minimum tenure months", 0, int(df["tenure months"].max()), 0)
+    filtered_df = df[df["tenure months"] >= min_tenure]
 
-        # Convert churn_value to numeric safely
-        df["churn_value"] = pd.to_numeric(df["churn_value"], errors="coerce")
+    # Churn metrics
+    churn_rate = filtered_df["churn_value"].mean() * 100
+    monthly_loss = filtered_df.loc[filtered_df["churn_value"] == 1, "monthly charges"].sum()
+    annual_loss = monthly_loss * 12
 
-        churn_rate = df["churn_value"].mean() * 100
+    st.write(f"Churn Rate: {churn_rate:.2f}%")
+    st.write(f"Estimated Monthly Revenue Lost: R{monthly_loss:,.2f}")
+    st.write(f"Estimated Annual Revenue Lost: R{annual_loss:,.2f}")
 
-        if pd.notna(churn_rate):
-            st.write(f"**Churn rate:** {churn_rate:.2f}%")
-        else:
-            st.warning("Churn rate could not be calculated (no valid numeric values).")
-    else:
-        st.warning("churn_value column not found in dataset.")
+    # Scenario testing (numeric input)
+    drop_rate = st.number_input("What if churn rate drops by (%)", 0, 100, 5)
+    new_loss = annual_loss * (1 - drop_rate/100)
+    st.write(f"New Annual Loss if churn drops: R{new_loss:,.2f}")
 
-    # Revenue loss estimates
-    if "monthly charges" in df.columns and "churn_value" in df.columns:
-        monthly_loss = df.loc[df["churn_value"] == 1, "monthly charges"].sum()
-        annual_loss = monthly_loss * 12
-        st.write(f"**Estimated monthly revenue lost:** R{monthly_loss:,.2f}")
-        st.write(f"**Estimated annual revenue lost:** R{annual_loss:,.2f}")
+    # Download button
+    csv = filtered_df.to_csv(index=False).encode("utf-8")
+    st.download_button("Download Insights (CSV)", csv, "business_insights.csv", "text/csv")
+
 
 
 with tab3:
