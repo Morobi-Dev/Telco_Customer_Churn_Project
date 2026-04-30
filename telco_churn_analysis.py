@@ -388,7 +388,7 @@ with tab1:
 with tab2:
     st.header("Business Insights")
 
-    # 🔹 Clean duplicates here before using the slider
+    # 🔹 Clean duplicates
     df_clean = df.loc[:, ~df.columns.duplicated()]
 
     # Local slider for exploration
@@ -404,32 +404,34 @@ with tab2:
     st.write(f"Estimated Monthly Revenue Lost: R{monthly_loss:,.2f}")
     st.write(f"Estimated Annual Revenue Lost: R{annual_loss:,.2f}")
 
-    # Scenario testing (numeric input)
+    # Scenario testing
     drop_rate = st.number_input("What if churn rate drops by (%)", 0, 100, 5)
     new_loss = annual_loss * (1 - drop_rate/100)
     st.write(f"New Annual Loss if churn drops: R{new_loss:,.2f}")
 
-  # --- CSV download ---
-csv = filtered_df.to_csv(index=False).encode("utf-8")
-st.download_button(
-    label="Download Insights (CSV)",
-    data=csv,
-    file_name="business_insights.csv",
-    mime="text/csv"
-)
+    # --- CSV download ---
+    csv = filtered_df.to_csv(index=False).encode("utf-8")
+    st.download_button(
+        label="Download Insights (CSV)",
+        data=csv,
+        file_name="business_insights.csv",
+        mime="text/csv"
+    )
 
-# --- Excel download ---
-output = io.BytesIO()
-with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
-    filtered_df.to_excel(writer, index=False, sheet_name="Insights")
-excel_data = output.getvalue()
+    # --- Excel download ---
+    import io
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine="openpyxl") as writer:
+        filtered_df.to_excel(writer, index=False, sheet_name="Insights")
+    excel_data = output.getvalue()
 
-st.download_button(
-    label="Download Insights (Excel)",
-    data=excel_data,
-    file_name="business_insights.xlsx",
-    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-)
+    st.download_button(
+        label="Download Insights (Excel)",
+        data=excel_data,
+        file_name="business_insights.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+
 
 with tab3:
     st.write("### Model Results")
