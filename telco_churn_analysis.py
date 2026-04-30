@@ -391,11 +391,19 @@ with tab2:
     # 🔹 Clean duplicates
     df_clean = df.loc[:, ~df.columns.duplicated()]
 
-    # Local slider for exploration
+    # 🔹 Unified filter section (all sliders together)
     min_tenure = st.slider("Minimum tenure months", 0, int(df_clean["tenure months"].max()), 0)
-    filtered_df = df_clean[df_clean["tenure months"] >= min_tenure]
+    max_monthly = st.slider("Maximum monthly charges", 0, int(df_clean["monthly charges"].max()), 100)
+    max_services = st.slider("Maximum services", 1, int(df_clean["total_services"].max()), 5)
 
-    # Churn metrics
+    # Apply filters
+    filtered_df = df_clean[
+        (df_clean["tenure months"] >= min_tenure) &
+        (df_clean["monthly charges"] <= max_monthly) &
+        (df_clean["total_services"] <= max_services)
+    ]
+
+    # 🔹 Business metrics
     churn_rate = filtered_df["churn_value"].mean() * 100
     monthly_loss = filtered_df[filtered_df["churn_value"] == 1]["monthly charges"].sum()
     annual_loss = monthly_loss * 12
@@ -404,19 +412,14 @@ with tab2:
     st.write(f"Estimated Monthly Revenue Lost: R{monthly_loss:,.2f}")
     st.write(f"Estimated Annual Revenue Lost: R{annual_loss:,.2f}")
 
-    # Scenario testing
+    # 🔹 Scenario testing
     drop_rate = st.number_input("What if churn rate drops by (%)", 0, 100, 5)
     new_loss = annual_loss * (1 - drop_rate/100)
     st.write(f"New Annual Loss if churn drops: R{new_loss:,.2f}")
 
     # --- CSV download ---
     csv = filtered_df.to_csv(index=False).encode("utf-8")
-    st.download_button(
-        label="Download Insights (CSV)",
-        data=csv,
-        file_name="business_insights.csv",
-        mime="text/csv"
-    )
+    st.download_button("Download Insights (CSV)", csv, "business_insights.csv", "text/csv")
 
     # --- Excel download ---
     import io
@@ -424,13 +427,8 @@ with tab2:
     with pd.ExcelWriter(output, engine="openpyxl") as writer:
         filtered_df.to_excel(writer, index=False, sheet_name="Insights")
     excel_data = output.getvalue()
-
-    st.download_button(
-        label="Download Insights (Excel)",
-        data=excel_data,
-        file_name="business_insights.xlsx",
-        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    )
+    st.download_button("Download Insights (Excel)", excel_data, "business_insights.xlsx",
+                       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
 
 with tab3:
