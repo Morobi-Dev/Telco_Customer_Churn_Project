@@ -46,6 +46,8 @@ can directly support decision-making and reduce financial risk.
   - Customers with higher monthly charges are more likely to churn
   - Customers with low tenure (0–12 months) are at the highest risk of leaving
   - Customers with fewer subscribed services show increased churn behaviour
+  - Certain payment methods show higher churn rates
+  - Machine learning models consistently identified Contract Type, Monthly Charges and Tenure as the strongest predictors.
 
 # Business Impact
   - Estimated monthly revenue loss due to churn: R1500.82
@@ -53,13 +55,13 @@ can directly support decision-making and reduce financial risk.
   - Average monthly revenue lost per churned customer: R0.80
   - Scenario testing shows that reducing churn by just 5% could save R83,000 annually
 
-    This demonsntrates how predictive analystics can translate directly into measurable financial outcomes.
-
-# Recommendations(So Far)
+# Recommendations
   - Introduce incentives for long-term contracts
   - Improve onboarding experience for new customers
   - Review pricing strategies for high-paying customers
   - Develop targeted retention campaigns for high-risk groups
+  - Prioritise retention for customers with high CLTV.
+  - Develop predictive dashboards highlighting high churn score customers.
 
 # Visualisations
    ![Churn Distribution](Visuals/churn_distribution.png)  
@@ -67,19 +69,12 @@ can directly support decision-making and reduce financial risk.
    ![Revenue Loss](Visuals/revenue_loss.png)  
 
 
+# This analysis demonstrates that customer churn is not random. It is strongly influenced by customer tenure, contract type,
+monthly charges, service adoption, and payment behaviour. By focusing retention efforts on these high-risk customer segments,
+the business can reduce churn, improve customer lifetime value, and protect recurring revenue.
 
-# Clone the repository
-git clone https://github.com/<your-username>/telco-customer-churn-prediction.git
 
-# Navigate into the project folder
-cd telco-customer-churn-prediction
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Run the Streamlit app
-streamlit run telco_churn_analysis.py
-
+# END!!!
 
 
 
