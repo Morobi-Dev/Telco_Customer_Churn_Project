@@ -70,8 +70,8 @@ can directly support decision-making and reduce financial risk.
 
 
 # This analysis demonstrates that customer churn is not random. It is strongly influenced by customer tenure, contract type,
-monthly charges, service adoption, and payment behaviour. By focusing retention efforts on these high-risk customer segments,
-the business can reduce churn, improve customer lifetime value, and protect recurring revenue.
+  monthly charges, service adoption, and payment behaviour. By focusing retention efforts on these high-risk customer segments,
+  the business can reduce churn, improve customer lifetime value, and protect recurring revenue.
 
 
 # END!!!
