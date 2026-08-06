@@ -1,4 +1,3 @@
-
 import pandas as pd
 import numpy as np
 import os
@@ -71,13 +70,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 # Churn vs Tenure Months
-import seaborn as sns
-import matplotlib.pyplot as plt
-
 sns.boxplot(x='churn_value', y='tenure months', data=df)
-plt.title('Churn vs Tenure Months')
-plt.close()
-
 plt.title('Churn vs Tenure Months')
 plt.close()
 
@@ -274,7 +267,6 @@ else:
     print("❌ Error: Training data has only one class. Please check preprocessing or reload dataset.")
 
 
-# Logistic Regression
 # Logistic Regression (increase iterations to avoid warnings)
 from sklearn.linear_model import LogisticRegression
 
@@ -527,32 +519,44 @@ log_acc = float(log_reg_acc*100) if 'log_reg_acc' in globals() and log_reg_acc i
 rf_acc_val = float(rf_acc*100) if 'rf_acc' in globals() and rf_acc is not None else 0.0
 gb_acc_val = float(gb_acc*100) if 'gb_acc' in globals() and gb_acc is not None else 0.0
 
+# FIX: each KPI card is now built with ONE st.markdown call carrying
+# unsafe_allow_html=True, instead of several calls where only the first
+# had unsafe_allow_html=True set. That mismatch was why the raw <div> tags
+# were showing up as literal text in the screenshot.
 with col1:
-    st.markdown("<div class='kpi-card'>", unsafe_allow_html=True)
-    st.markdown(f"<div class='kpi-label'>Churn Rate</div>")
-    st.markdown(f"<div class='kpi-value'>{global_churn_rate:.2f}%</div>")
-    st.markdown(f"<div class='kpi-trend'>↓ 3.2% vs last period</div>")
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown(f"""
+    <div class='kpi-card'>
+        <div class='kpi-label'>Churn Rate</div>
+        <div class='kpi-value'>{global_churn_rate:.2f}%</div>
+        <div class='kpi-trend'>↓ 3.2% vs last period</div>
+    </div>
+    """, unsafe_allow_html=True)
 
 with col2:
-    st.markdown("<div class='kpi-card'>", unsafe_allow_html=True)
-    st.markdown(f"<div class='kpi-label'>Monthly Revenue Lost</div>")
-    st.markdown(f"<div class='kpi-value'>R{global_monthly_loss:,.0f}</div>")
-    st.markdown(f"<div class='kpi-trend' style='color:var(--amber, #F59E0B)'>High priority</div>")
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown(f"""
+    <div class='kpi-card'>
+        <div class='kpi-label'>Monthly Revenue Lost</div>
+        <div class='kpi-value'>R{global_monthly_loss:,.0f}</div>
+        <div class='kpi-trend' style='color:#F59E0B'>High priority</div>
+    </div>
+    """, unsafe_allow_html=True)
 
 with col3:
-    st.markdown("<div class='kpi-card'>", unsafe_allow_html=True)
-    st.markdown(f"<div class='kpi-label'>Annualised Loss</div>")
-    st.markdown(f"<div class='kpi-value'>R{global_annual_loss:,.0f}</div>")
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown(f"""
+    <div class='kpi-card'>
+        <div class='kpi-label'>Annualised Loss</div>
+        <div class='kpi-value'>R{global_annual_loss:,.0f}</div>
+    </div>
+    """, unsafe_allow_html=True)
 
 with col4:
-    st.markdown("<div class='kpi-card'>", unsafe_allow_html=True)
-    st.markdown(f"<div class='kpi-label'>Top Model (Logistic Reg)</div>")
-    st.markdown(f"<div class='kpi-value'>{log_acc:.2f}%</div>")
-    st.markdown(f"<div class='kpi-trend'>RF {rf_acc_val:.2f}% • GB {gb_acc_val:.2f}%</div>")
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown(f"""
+    <div class='kpi-card'>
+        <div class='kpi-label'>Top Model (Logistic Reg)</div>
+        <div class='kpi-value'>{log_acc:.2f}%</div>
+        <div class='kpi-trend'>RF {rf_acc_val:.2f}% • GB {gb_acc_val:.2f}%</div>
+    </div>
+    """, unsafe_allow_html=True)
 
 st.markdown("---")
 
@@ -669,5 +673,3 @@ else:  # Models
 st.markdown("<div class='footer'>Developed by Morobi Mofokeng — Data Science | Business Intelligence | Machine Learning — © 2026 All Rights Reserved</div>", unsafe_allow_html=True)
 
 # End redesigned UI
-
-
