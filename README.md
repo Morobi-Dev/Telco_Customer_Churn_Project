@@ -92,36 +92,38 @@ streamlit run Telco_Customer_Churn_Project.py
 ------------------------------------
 |Logistic Regression  | 73.06%      |
 
+-- Across all three models, Contract Type, Monthly Charges, and Tenure consistently emerged as the strongest predictors of churn.
+
 # Key Insights
-  - Customers on month-to-month contracts have a significantly higher churn rate
+  - Customers on month-to-month contracts have a significantly higher churn rate than those on annual or two-year contracts
   - Customers with higher monthly charges are more likely to churn
   - Customers with low tenure (0–12 months) are at the highest risk of leaving
   - Customers with fewer subscribed services show increased churn behaviour
   - Certain payment methods show higher churn rates
-  - Machine learning models consistently identified Contract Type, Monthly Charges and Tenure as the strongest predictors.
 
 # Business Impact
-  - Estimated monthly revenue loss due to churn: R1500.82
-  - Estimated annual revenue loss: R18,009.90
-  - Average monthly revenue lost per churned customer: R0.80
-  - Scenario testing shows that reducing churn by just 5% could save R83,000 annually
+  - Churn rate: 26.54%
+  - Estimated monthly revenue lost to churn: R139,131
+  - Estimated annual revenue lost to churn: R1,669,570
+  - Scenario testing built into the dashboard shows that reducing churn by just 5% 
+    among current churners could save approximately R83,479 annually
 
 # Recommendations
   - Introduce incentives for long-term contracts
-  - Improve onboarding experience for new customers
-  - Review pricing strategies for high-paying customers
+  - Improve the onboarding experience for new customers to reduce early-tenure churn
+  - Review pricing strategies for high-paying customers, who show elevated churn risk
   - Develop targeted retention campaigns for high-risk groups
-  - Prioritise retention for customers with high CLTV.
-  - Develop predictive dashboards highlighting high churn score customers.
+  - Prioritise retention for customers with high high customer lifetime value (CLTV).
+  - Extend the dashboard's scenario tool into a live retention-priority list for the customer success team
 
 # Visualisations
-   ![Churn Distribution](Visuals/churn_distribution.png)  
-   ![Feature Importance](Visuals/feature_importance.png)  
-   ![Revenue Loss](Visuals/revenue_loss.png)  
+  ![Dashboard Overview](assets/screenshot_overview.png)
+  ![Churn by Contract Type](assets/screenshot_insights.png)
+  ![Model Comparison](assets/screenshot_models.png)
 
 
   This analysis demonstrates that customer churn is not random. It is strongly influenced by customer tenure, contract type,
-  monthly charges, service adoption, and payment behaviour. By focusing retention efforts on these high-risk customer segments,
+  monthly charges, service adoption, and payment behaviour. By focusing retention efforts on these high-risk segments,
   the business can reduce churn, improve customer lifetime value, and protect recurring revenue.
 
 
