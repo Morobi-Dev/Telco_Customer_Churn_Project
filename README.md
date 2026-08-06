@@ -83,7 +83,7 @@ streamlit run Telco_Customer_Churn_Project.py
    - Evaluated performance using accuracy, precision, recall, and confusion matrices
   
 # Model Performance
-------------------------------------
+
 | Model               |  Accuracy   |
 ------------------------------------
 |Gradient Boosting	  | 79.67%      |
@@ -91,7 +91,7 @@ streamlit run Telco_Customer_Churn_Project.py
 |Random Forest	       | 78.82%      |
 ------------------------------------
 |Logistic Regression  | 73.06%      |
-------------------------------------  
+
 # Key Insights
   - Customers on month-to-month contracts have a significantly higher churn rate
   - Customers with higher monthly charges are more likely to churn
